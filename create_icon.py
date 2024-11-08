@@ -1,0 +1,21 @@
+import base64
+
+icon_base64 = '''
+iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABz0lEQVR4AcXXv0scQRjG8e/u
+nYrYiChYKCiIhYVgYaGFhYVgYWFhYWHhP2BhYWFhYWFhYWFhYSE2FhYWFhYWFhYWFhYWFhYW
+FhYWYsR4yQ0zL+/s7c7u7c0LB8PMu7Mzz8z7Y2bPQjhO4xpu4xbu4Cau4QwSxEHQFdtwEW/w
+Bd/xE7/wHe/xCucQ+x1oiL14jC/QreIFBhDZHWiAk3gJ3V+8xhBiuwNNcB6fofsHLzGMyO5A
+C1zBL+j+4wNOILI70A7X8Qe6NVzELkR2BzrhFnRreI0+RHYH9mAcv6H7hPOI7Q50wV38gW4Z
+ZxDbHdiPh/gH3XucQWx3oBse4Td0H3EWsd2BXkzgD3QfcBqx3YF+TOEvdO9wCrHdgQFM4x90
+b3ESsd2BQTzCGnSvcQyx3YEhzOAvdC9xFLHdgWE8xhp0L3AEkd2BETzBf+ieYxiR3YGDeIY1
+6J5hCJHdgUN4jjXonmIQkd2Bw5jFOnRPMIDI7sARzGEduscYQGR34CjmsA7dI/QjsjtwDM+x
+Dt1D9CGyO3Ac81iH7j76ENkdOIEFrEN3D72I7A6cxEusQ3cXPYjsDpzCS6xDdwfdiOwOnMYC
+1qG7jS5EdgfO4BXWobuFTvwHgtVwgNXGqhwAAAAASUVORK5CYII=
+'''
+
+# 移除可能的空白字符
+icon_base64 = icon_base64.strip()
+
+# 将 Base64 解码并写入文件
+with open('images/icon32.png', 'wb') as f:
+    f.write(base64.b64decode(icon_base64)) 

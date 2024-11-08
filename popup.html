@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 200px;
+      padding: 10px;
+    }
+    .language-option {
+      display: flex;
+      align-items: center;
+      margin: 8px 0;
+      padding: 8px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .language-option:hover {
+      background-color: #e0e0e0;
+    }
+    .language-option.selected {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .language-icon {
+      margin-right: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="language-option" data-lang="en">
+    <span class="language-icon">🇬🇧</span>
+    <span>英文 (English)</span>
+  </div>
+  <div class="language-option" data-lang="zh-CN">
+    <span class="language-icon">🇨🇳</span>
+    <span>中文 (Chinese)</span>
+  </div>
+  <div class="language-option" data-lang="ja">
+    <span class="language-icon">🇯🇵</span>
+    <span>日文 (Japanese)</span>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html> 
