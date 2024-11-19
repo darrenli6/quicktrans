@@ -1,32 +1,73 @@
-// 存储选中的目标语言
-let targetLanguage = 'zh-CN'; // 默认为中文
+document.addEventListener('DOMContentLoaded', () => {
+  const sourceLangSelect = document.getElementById('sourceLang');
+  const targetLangSelect = document.getElementById('targetLang');
+  const translateBtn = document.getElementById('translateBtn');
+  const swapLangsBtn = document.getElementById('swapLangs');
 
-// 为每个语言选项添加点击事件
-document.querySelectorAll('.language-option').forEach(option => {
-  option.addEventListener('click', async () => {
-    // 更新选中状态的样式
-    document.querySelectorAll('.language-option').forEach(opt => {
-      opt.classList.remove('selected');
+  // 从存储中恢复语言选择
+  chrome.storage.sync.get(['sourceLang', 'targetLang'], (data) => {
+    if (data.sourceLang) {
+      sourceLangSelect.value = data.sourceLang;
+    }
+    if (data.targetLang) {
+      targetLangSelect.value = data.targetLang;
+    }
+    updateTargetLangOptions();
+  });
+
+  // 更新目标语言选项，避免选择相同语言
+  function updateTargetLangOptions() {
+    const selectedSourceLang = sourceLangSelect.value;
+    Array.from(targetLangSelect.options).forEach(option => {
+      option.disabled = option.value === selectedSourceLang;
     });
-    option.classList.add('selected');
 
-    // 获取选中的语言
-    targetLanguage = option.dataset.lang;
+    // 如果目标语言被禁用，自动选择下一个可用语言
+    if (targetLangSelect.value === selectedSourceLang) {
+      targetLangSelect.value = Array.from(targetLangSelect.options).find(option => !option.disabled).value;
+    }
+  }
 
-    // 执行翻译
+  sourceLangSelect.addEventListener('change', () => {
+    updateTargetLangOptions();
+    saveLanguageSelection();
+  });
+
+  targetLangSelect.addEventListener('change', saveLanguageSelection);
+
+  swapLangsBtn.addEventListener('click', () => {
+    const temp = sourceLangSelect.value;
+    sourceLangSelect.value = targetLangSelect.value;
+    targetLangSelect.value = temp;
+    updateTargetLangOptions();
+    saveLanguageSelection();
+  });
+
+  translateBtn.addEventListener('click', async () => {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const sourceLang = sourceLangSelect.value;
+    const targetLang = targetLangSelect.value;
+
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
       function: translatePage,
-      args: [targetLanguage] // 传递目标语言参数
+      args: [sourceLang, targetLang]
     });
   });
+
+  // 保存语言选择到存储
+  function saveLanguageSelection() {
+    chrome.storage.sync.set({
+      sourceLang: sourceLangSelect.value,
+      targetLang: targetLangSelect.value
+    });
+  }
+
+  // 初始化目标语言选项
+  updateTargetLangOptions();
 });
 
-// 页面加载时选中默认语言
-document.querySelector(`[data-lang="${targetLanguage}"]`).classList.add('selected');
-
-function translatePage(targetLang) {
+function translatePage(sourceLang, targetLang) {
   // 获取页面所有文本节点
   function getAllTextNodes() {
     const walker = document.createTreeWalker(
@@ -52,8 +93,8 @@ function translatePage(targetLang) {
   }
 
   // 翻译文本
-  async function translateText(text, targetLang) {
-    const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`);
+  async function translateText(text, sourceLang, targetLang) {
+    const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`);
     const data = await response.json();
     return data[0][0][0];
   }
@@ -86,7 +127,7 @@ function translatePage(targetLang) {
             continue;
           }
 
-          const translatedText = await translateText(originalText, targetLang);
+          const translatedText = await translateText(originalText, sourceLang, targetLang);
           
           const translationSpan = document.createElement('span');
           translationSpan.className = 'translation-text';

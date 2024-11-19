@@ -4,44 +4,74 @@
   <meta charset="UTF-8">
   <style>
     body {
-      width: 200px;
+      width: 220px;
       padding: 10px;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
     }
-    .language-option {
+    .language-select {
       display: flex;
       align-items: center;
-      margin: 8px 0;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    select {
+      width: 45%;
       padding: 8px;
-      background-color: #f5f5f5;
+      border: 1px solid #ccc;
       border-radius: 4px;
+      font-size: 14px;
+      background-color: #fff;
+    }
+    .swap-button {
+      background: none;
+      border: none;
       cursor: pointer;
-      transition: background-color 0.2s;
+      font-size: 18px;
+      color: #4CAF50;
     }
-    .language-option:hover {
-      background-color: #e0e0e0;
-    }
-    .language-option.selected {
+    button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
       background-color: #4CAF50;
       color: white;
+      cursor: pointer;
     }
-    .language-icon {
-      margin-right: 10px;
-      font-size: 16px;
+    .footer {
+      font-size: 10px;
+      color: #888;
+      text-align: center;
+      margin-top: auto;
     }
   </style>
 </head>
 <body>
-  <div class="language-option" data-lang="en">
-    <span class="language-icon">🇬🇧</span>
-    <span>英文 (English)</span>
+  <div>
+    <div class="language-select">
+      <select id="sourceLang">
+        <option value="en">英文 (English)</option>
+        <option value="zh-CN">中文 (Chinese)</option>
+        <option value="ja">日文 (Japanese)</option>
+      </select>
+      <button class="swap-button" id="swapLangs">⇄</button>
+      <select id="targetLang">
+        <option value="zh-CN">中文 (Chinese)</option>
+        <option value="en">英文 (English)</option>
+        <option value="ja">日文 (Japanese)</option>
+      </select>
+    </div>
+    <button id="translateBtn">Translate</button>
   </div>
-  <div class="language-option" data-lang="zh-CN">
-    <span class="language-icon">🇨🇳</span>
-    <span>中文 (Chinese)</span>
-  </div>
-  <div class="language-option" data-lang="ja">
-    <span class="language-icon">🇯🇵</span>
-    <span>日文 (Japanese)</span>
+  <div class="footer">
+    © 2024 QuickTrans.WORLD. All rights reserved.
   </div>
   <script src="popup.js"></script>
 </body>

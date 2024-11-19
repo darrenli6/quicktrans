@@ -1,12 +1,17 @@
 {
   "manifest_version": 3,
   "name": "QuickTrans",
-  "version": "1.0",
+  "version": "1.1",
+  "web_accessible_resources": [{
+    "resources": ["libs/*"],  
+    "matches": ["<all_urls>"]  
+  }],
   "description": "QuickTrans是一款强大的网页翻译工具，为用户提供流畅的阅读体验。主要功能：✨ 划词翻译：选中任意文本即可获得翻译 ✨ 整页翻译：一键翻译整个网页内容 ✨ 快捷操作：右键菜单快速访问",
   "permissions": [
     "activeTab",
     "scripting",
     "contextMenus",
+    "tabs",
     "storage"
   ],
   "host_permissions": [
@@ -30,13 +35,15 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "js": ["content.js"],
+      "run_at": "document_end"
     }
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
-  "author": "your@email.com",
-  "homepage_url": "https://github.com/yourusername/quicktrans",
+  "author": "darren94m@gmail.com",
+  "homepage_url": "https://github.com/darrenli6/quicktrans",
   "minimum_chrome_version": "88"
 } 
