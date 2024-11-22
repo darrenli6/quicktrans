@@ -11,8 +11,8 @@
     "activeTab",
     "scripting",
     "contextMenus",
-    "tabs",
-    "storage"
+    "storage",
+    "notifications"
   ],
   "host_permissions": [
     "https://translate.googleapis.com/translate_a/*"
